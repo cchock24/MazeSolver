@@ -5,6 +5,9 @@
  */
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 public class MazeSolver {
     private Maze maze;
@@ -29,7 +32,22 @@ public class MazeSolver {
     public ArrayList<MazeCell> getSolution() {
         // TODO: Get the solution from the maze
         // Should be from start to end cells
-        return null;
+        Stack<MazeCell> s = new Stack<MazeCell>();
+        ArrayList<MazeCell> m = new ArrayList<MazeCell>();
+        //Add End Cell
+        s.push(maze.getEndCell());
+        MazeCell parent = maze.getEndCell().getParent();
+        //Takes Parent of each cell until reach start cell
+        while(parent != maze.getStartCell()){
+            s.push(parent);
+            parent = parent.getParent();
+        }
+        s.push(maze.getStartCell());
+        int size = s.size();
+        for(int i = 0; i < size; i++){
+            m.add(s.pop());
+        }
+        return m;
     }
 
     /**
@@ -39,7 +57,35 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeDFS() {
         // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-        return null;
+        Stack<MazeCell> intersection = new Stack<MazeCell>();
+        MazeCell current = maze.getStartCell();
+        //Loops until all it finds End Cell
+        while(current != maze.getEndCell()){
+            //Sets Explored
+            current.setExplored(true);
+            int row = current.getRow();
+            int col = current.getCol();
+            //Check if the Neighbhours are valid
+            //Sets Parent
+            if(maze.isValidCell(row, col+1)){
+                maze.getCell(row,col+1).setParent(current);
+                intersection.push(maze.getCell(row,col+1));
+            }
+            if(maze.isValidCell(row+1, col)){
+                maze.getCell(row+1,col).setParent(current);
+                intersection.push(maze.getCell(row+1,col));
+            }
+            if(maze.isValidCell(row, col -1)){
+                maze.getCell(row,col-1).setParent(current);
+                intersection.push(maze.getCell(row,col-1));
+            }
+            if(maze.isValidCell(row-1,col)){
+                maze.getCell(row-1,col).setParent(current);
+                intersection.push(maze.getCell(row-1,col));
+            }
+            current = intersection.pop();
+        }
+        return this.getSolution();
     }
 
     /**
@@ -49,7 +95,34 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-        return null;
+        Queue<MazeCell> intersection = new LinkedList<MazeCell>();
+        MazeCell current = maze.getStartCell();
+        //Loops until End Cell
+        while(current != maze.getEndCell()){
+            //Sets explored
+            current.setExplored(true);
+            int row = current.getRow();
+            int col = current.getCol();
+            //Checks if Neighbhour valid and sets parent
+            if(maze.isValidCell(row, col+1)){
+                maze.getCell(row,col+1).setParent(current);
+                intersection.add(maze.getCell(row,col+1));
+            }
+            if(maze.isValidCell(row+1, col)){
+                maze.getCell(row+1,col).setParent(current);
+                intersection.add(maze.getCell(row+1,col));
+            }
+            if(maze.isValidCell(row, col -1)){
+                maze.getCell(row,col-1).setParent(current);
+                intersection.add(maze.getCell(row,col-1));
+            }
+            if(maze.isValidCell(row-1,col)){
+                maze.getCell(row-1,col).setParent(current);
+                intersection.add(maze.getCell(row-1,col));
+            }
+            current = intersection.remove();
+        }
+        return this.getSolution();
     }
 
     public static void main(String[] args) {

@@ -147,6 +147,14 @@ public class Maze {
      */
     public boolean isValidCell(int row, int col) {
         // TODO: Complete this function
-        return true;
+        //Checks if Row and Col are not out of bounds
+        if(row >= 0 && row < numRows && col >= 0 && col < numCols){
+            MazeCell temp = this.getCell(row,col);
+            //Checks if cell has been explored or is a wall
+            if(!temp.isExplored() && !temp.isWall()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
