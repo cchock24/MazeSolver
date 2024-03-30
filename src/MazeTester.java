@@ -63,10 +63,15 @@ public class MazeTester {
     }
 
     public static void main(String[] args) {
-        Maze maze = new Maze("Resources/maze3.txt");
-        MazeSolver ms = new MazeSolver(maze);
-        ArrayList<MazeCell> cells = ms.solveMazeBFS();
-        maze.printSolution(cells);
+        Maze maze1 = new Maze("Resources/maze3.txt");
+        Maze maze2 = new Maze("Resources/maze2.txt");
+        MazeSolver ms1 = new MazeSolver(maze1);
+        MazeSolver ms2 = new MazeSolver(maze2);
+
+        ArrayList<MazeCell> cells1 = ms1.solveMazeBFS();
+        ArrayList<MazeCell> cells2 = ms2.solveMazeBFS();
+        maze1.printSolution(cells1);
+        maze2.printSolution(cells2);
         MazeTester.testGetSolution();
     }
 }
